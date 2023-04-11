@@ -1,20 +1,17 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import styled from 'styled-components';
 import { FC } from 'react';
 import { IHomePage } from '../types/home';
 import { GetStaticProps } from 'next';
 import { getBets } from '../services';
+import TableHeader from '../components/TableHeader';
+import { Table } from '../styles/home';
+import { HEADERS } from '../constants';
+import React from 'react';
+import TableRow from '../components/TableRow';
 
 const HomePage: FC<IHomePage> = props => {
   const { data } = props;
 
-
-  console.log('data = ', data);
-
-  const Title = styled.h1`
-    color: yellow;
-  `;
   return (
     <>
       <Head>
@@ -24,7 +21,20 @@ const HomePage: FC<IHomePage> = props => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        
+        <Table>
+          <thead>
+            <tr>
+              {HEADERS.map((header, index) => (
+                <TableHeader key={index}>{`${header}${index === 0 ? `: ${data.length}` : ''}`}</TableHeader>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {data.map(data => (
+              <TableRow key={data.NID} data={data} />
+            ))}
+          </tbody>
+        </Table>
       </main>
     </>
   );
@@ -34,8 +44,6 @@ export default HomePage;
 
 export const getStaticProps: GetStaticProps = async () => {
   let _data = [];
-
-  const data = await getBets();
 
   try {
     const { data } = await getBets();

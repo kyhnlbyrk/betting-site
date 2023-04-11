@@ -2423,6 +2423,11 @@ neo-async@^2.6.2:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+next-lazy-hydrate@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/next-lazy-hydrate/-/next-lazy-hydrate-1.1.0.tgz#0fa1f83a88217cc5a9724d649e330954c789310d"
+  integrity sha512-MQ6oiHUpE10tfCJ/MGa7lhHymrAeFw2AXnfOG/kxxoSS46FCtt6MZXnn/r2phwdUh2g9C5aggB086MnugahDIg==
+
 next@13.3.0:
   version "13.3.0"
   resolved "https://registry.npmjs.org/next/-/next-13.3.0.tgz"
