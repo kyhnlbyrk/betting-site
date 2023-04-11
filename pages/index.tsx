@@ -1,8 +1,12 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
+import styled from 'styled-components';
 
 export default function Home() {
+  const Title = styled.h1`
+    color: yellow;
+  `;
   return (
     <>
       <Head>
@@ -12,6 +16,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
+        <Title>styled test</Title>
         <div className={styles.description}>
           <p>
             Get started by editing&nbsp;
