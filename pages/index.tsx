@@ -1,16 +1,37 @@
 import Head from 'next/head';
-import { FC } from 'react';
+import { FC, useRef, useState } from 'react';
 import { IHomePage } from '../types/home';
 import { GetStaticProps } from 'next';
 import { getBets } from '../services';
-import TableHeader from '../components/TableHeader';
-import { Table } from '../styles/home';
-import { HEADERS } from '../constants';
+import { VISIBLE_DATA_LENGTH } from '../constants';
 import React from 'react';
-import TableRow from '../components/TableRow';
+import { DATA } from '../models';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import { BasketProvider } from '../context/basket';
+import Table from '../components/Table';
+import Basket from '../components/Basket';
 
 const HomePage: FC<IHomePage> = props => {
   const { data } = props;
+
+  const [visibleData, setVisibleData] = useState<DATA[]>(data.slice(0, VISIBLE_DATA_LENGTH));
+  const [index, setIndex] = useState<number>(0);
+
+  React.useEffect(() => {
+    setVisibleData(data.slice(0, VISIBLE_DATA_LENGTH * index + VISIBLE_DATA_LENGTH));
+  }, [index]);
+
+  const next = React.useCallback(() => {
+    setIndex(prevState => prevState + 1);
+  }, [index]);
+  const pageEndRef = useRef<HTMLDivElement>(null);
+
+  useIntersectionObserver({
+    target: pageEndRef,
+    rootMargin: '400px',
+    onIntersect: next,
+    enabled: !(data.length <= index * VISIBLE_DATA_LENGTH),
+  });
 
   return (
     <>
@@ -21,20 +42,11 @@ const HomePage: FC<IHomePage> = props => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Table>
-          <thead>
-            <tr>
-              {HEADERS.map((header, index) => (
-                <TableHeader key={index}>{`${header}${index === 0 ? `: ${data.length}` : ''}`}</TableHeader>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map(data => (
-              <TableRow key={data.NID} data={data} />
-            ))}
-          </tbody>
-        </Table>
+        <BasketProvider>
+          <Table visibleData={visibleData} size={data.length} />
+          <div ref={pageEndRef} />
+          <Basket />
+        </BasketProvider>
       </main>
     </>
   );
